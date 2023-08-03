@@ -28,6 +28,7 @@
         {
             "resources": [
                 "side-panel.html",
+                "popup.js",
                 "style.css"
             ],
             "matches": [
@@ -38,7 +39,7 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["content.js"]
+            "js": ["content.js", "APIService.js", "BackgroundService.js", "EmailSummarizeService.js", "RephraseService.js", "StorageService.js", "SummarizeService.js"]
         }
     ],
     "action": {
