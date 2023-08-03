@@ -3,9 +3,6 @@
 
     sendRequest(data) {
         // logic to send data to OpenAI for processing
+        return data;
     }
  }
-
- // Make the class globally available
-
-  //window.APIService = APIService;

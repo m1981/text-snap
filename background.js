@@ -7,33 +7,9 @@ importScripts('EmailSummarizeService.js');
 importScripts('BackgroundService.js');
 
 let apiService = new APIService();
-const storageService = new StorageService();
+let storageService = new StorageService();
 
-console.log("asdasd");
-
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-    let service;
-    let selectedText = info.selectionText;
-    switch(info.menuItemId) {
-        case 'summarize':
-            service = new SummarizeService(apiService, storageService);
-            break;
-        case 'rephrase':
-            service = new RephraseService(apiService, storageService);
-            break;
-        case 'summarize-email':
-            service = new EmailSummarizeService(apiService, storageService);
-            break;
-        default:
-            return;
-    }
-
-    const backgroundService = new BackgroundService(apiService, storageService);
-    backgroundService.invokeService(service, selectedText);
-});
-
-
-chrome.runtime.onInstalled.addListener(() => {
+chrome.contextMenus.removeAll(function() {
     chrome.contextMenus.create({
         id: "summarize",
         title: "Summarize",
@@ -53,23 +29,32 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
+
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    const selectedText = info.selectionText;
+    let service;
+    let selectedText = info.selectionText;
+    switch(info.menuItemId) {
+        case 'summarize':
+            console.log('sum');
+            service = new SummarizeService(apiService, storageService);
+            break;
+        case 'rephrase':
+            service = new RephraseService(apiService, storageService);
+            break;
+        case 'email':
+            service = new EmailSummarizeService(apiService, storageService);
+            break;
+        default:
+            return;
+    }
 
-    chrome.storage.sync.set({ "selectedText": selectedText }, () => {
-        let pageToOpen = 'summary.html'; // default action
-        
-        switch (info.menuItemId) {
-            case 'rephrase':
-                pageToOpen = 'rephrase.html';
-                break;
-            case 'emailSummarize':
-                pageToOpen = 'email.html';
-                break;
-            default:
-                break;
-        }
-        
+    const backgroundService = new BackgroundService(apiService, storageService);
+    backgroundService.invokeService(service, selectedText); // pass selectedText to the invokeService
 
+    chrome.windows.create({
+        url: chrome.runtime.getURL('popup.html'), // change this to the HTML file you want to show
+        type: 'popup',
+        width: 300,
+        height: 600
     });
 });

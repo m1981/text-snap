@@ -2,10 +2,27 @@ class StorageService {
     constructor() {}
 
     saveData(key, data) {
-        // logic to save data to chrome local storage
+        return new Promise((resolve, reject) => {
+            chrome.storage.local.set({ [key]: data }, () => {
+                if(chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError);
+                } else {
+                    resolve();
+                }
+            });
+        })
     }
 
     retrieveData(key) {
-        // logic to retrieve data from chrome local storage
+        console.log('retrieve data')
+        return new Promise((resolve, reject) => {
+            chrome.storage.local.get([key], (result) => {
+                if(chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError);
+                } else {
+                    resolve(result[key]);
+                }
+            });
+        })
     }
 }

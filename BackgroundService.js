@@ -1,11 +1,11 @@
- class BackgroundService {
+class BackgroundService {
     constructor(apiService, storageService) {
         this.apiService = apiService;
         this.storageService = storageService;
     }
 
-    invokeService(service, selectedText) {
-        //const selectedText = Content.captureSelectedText();
-        return service.processText(selectedText);
+    async invokeService(service, selectedText) {
+        const processedText = await service.processText(selectedText);
+        await this.storageService.saveData('processedText', processedText);
     }
 }

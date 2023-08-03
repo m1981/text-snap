@@ -39,7 +39,7 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["content.js", "APIService.js", "BackgroundService.js", "EmailSummarizeService.js", "RephraseService.js", "StorageService.js", "SummarizeService.js"]
+            "js": ["APIService.js", "BackgroundService.js", "EmailSummarizeService.js", "RephraseService.js", "StorageService.js", "SummarizeService.js"]
         }
     ],
     "action": {
